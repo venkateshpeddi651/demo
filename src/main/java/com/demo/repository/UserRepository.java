@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,4 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByEmailIgnoreCase(String email);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
+    
+    @Query(nativeQuery = true, value = "select u.* from jhi_user u left join resident r on u.id = r.user_id inner join jhi_user_authority a on u.id = a.user_id where r.user_id is null and a.authority_name='ROLE_USER' ")
+    List<User> findAllUnAssignedUsers();
 }

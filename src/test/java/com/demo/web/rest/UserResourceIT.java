@@ -93,6 +93,24 @@ public class UserResourceIT {
         user.setLangKey(DEFAULT_LANGKEY);
         return user;
     }
+    
+    public static User createEntityForFacility(EntityManager em) {
+        User user = new User();
+        user.setLogin(DEFAULT_LOGIN);
+        user.setPassword(RandomStringUtils.random(60));
+        user.setActivated(true);
+        user.setEmail(RandomStringUtils.randomAlphabetic(5) + DEFAULT_EMAIL);
+        user.setFirstName(DEFAULT_FIRSTNAME);
+        user.setLastName(DEFAULT_LASTNAME);
+        user.setImageUrl(DEFAULT_IMAGEURL);
+        user.setLangKey(DEFAULT_LANGKEY);
+        Set<Authority> authorities = new HashSet<Authority>();
+        Authority role = new Authority();
+        role.setName(AuthoritiesConstants.FACILITY_ADMIN);
+        authorities.add(role);
+        user.setAuthorities(authorities);
+        return user;
+    }
 
     @BeforeEach
     public void initTest() {

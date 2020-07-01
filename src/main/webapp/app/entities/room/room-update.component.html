@@ -1,0 +1,58 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-room-heading">Create or edit a Room</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_roomNumber">Room Number</label>
+                    <input type="text" class="form-control" name="roomNumber" id="field_roomNumber"
+                           formControlName="roomNumber"/>
+                    <div *ngIf="editForm.get('roomNumber')!.invalid && (editForm.get('roomNumber')!.dirty || editForm.get('roomNumber')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('roomNumber')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_facility">Facility</label>
+                    <select class="form-control" id="field_facility" name="facility" formControlName="facilityId">
+                        <option *ngIf="!editForm.get('facilityId')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="facilityOption.id" *ngFor="let facilityOption of facilities; trackBy: trackById">{{ facilityOption.id }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('facilityId')!.invalid && (editForm.get('facilityId')!.dirty || editForm.get('facilityId')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('facilityId')?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
